@@ -8,7 +8,8 @@ const Sidebar = () => {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Settings', path: '/settings' }, // We'll build Settings later
+    { name: 'Pomodoro History', path: '/pomodoro-history' },
+    { name: 'Settings', path: '/settings' }, // Placeholder
   ];
 
   return (
