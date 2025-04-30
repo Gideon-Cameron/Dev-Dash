@@ -15,6 +15,10 @@ const Dashboard = () => {
         <GitHubStats />
         {/* <QuoteBox /> */}
 
+        <div className="rounded-lg bg-white p-6 shadow-md">
+          💬 Quote of the Day will be added soon.
+        </div>
+
         {/* Placeholder for future Weather widget */}
         <div className="rounded-lg bg-white p-6 shadow-md">
           🌦️ Weather Widget coming soon...
