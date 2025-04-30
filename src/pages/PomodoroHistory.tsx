@@ -93,7 +93,7 @@ const PomodoroHistory = () => {
               <strong>{sessions.length}</strong> focus sessions
             </p>
             <p className="text-lg text-gray-700">
-              <strong>{Math.round(totalMinutes)}</strong> total minutes focused
+              <strong>{Math.round(totalMinutes)}</strong> total minutes focused.
             </p>
           </div>
 
