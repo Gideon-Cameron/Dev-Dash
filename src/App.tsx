@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import PomodoroHistory from './pages/PomodoroHistory';
 import NotFound from './pages/NotFound';
 import AppLayout from './layout/AppLayout';
 
@@ -33,6 +34,19 @@ const App = () => {
             isAuthenticated ? (
               <AppLayout>
                 <Dashboard />
+              </AppLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        <Route
+          path="/pomodoro-history"
+          element={
+            isAuthenticated ? (
+              <AppLayout>
+                <PomodoroHistory />
               </AppLayout>
             ) : (
               <Navigate to="/login" />
