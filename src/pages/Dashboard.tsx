@@ -1,5 +1,6 @@
 // src/pages/Dashboard.tsx
 import GitHubStats from '../features/GitHubStats/GitHubStats';
+import GitHubRepoList from '../features/GitHubRepoList/GitHubRepoList';
 // import QuoteBox from '../features/QuoteBox/QuoteBox';
 
 const Dashboard = () => {
@@ -11,18 +12,9 @@ const Dashboard = () => {
       </p>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* Working Widgets */}
         <GitHubStats />
         {/* <QuoteBox /> */}
-
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          💬 Quote of the Day will be added soon.
-        </div>
-
-        {/* Placeholder for future Weather widget */}
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          🌦️ Weather Widget coming soon...
-        </div>
+        <GitHubRepoList />
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-// src/features/GitHubRepoList/GitHubRepoList.tsx
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
@@ -36,12 +35,25 @@ const GitHubRepoList = () => {
     const githubProfile = user?.providerData.find(
       (provider) => provider.providerId === 'github.com'
     );
-
-    const username = githubProfile?.uid;
+  
+    // Try to use displayName, fallback to cleaned value
+    let username = githubProfile?.displayName?.trim();
+  
+    if (username && username.includes(' ')) {
+      // Replace spaces with dashes (temporary workaround)
+      username = username.replace(/\s+/g, '-');
+    }
+  
+    console.log('Fetching GitHub repos for username:', username);
+  
     if (username) {
       fetchRepos(username);
+    } else {
+      setError('GitHub username not found.');
+      setLoading(false);
     }
   }, [user]);
+  
 
   if (loading) {
     return (
