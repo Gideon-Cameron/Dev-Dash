@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { logPomodoroSession } from './pomodoroService';
 
 const FOCUS_DURATION = 25 * 60; // 25 minutes in seconds
 const BREAK_DURATION = 5 * 60;  // 5 minutes in seconds
@@ -29,7 +30,14 @@ const usePomodoro = () => {
     };
   }, [isRunning]);
 
-  const handleSessionComplete = () => {
+  const handleSessionComplete = async () => {
+    const completedType = isFocusMode ? 'focus' : 'break';
+    const duration = isFocusMode ? FOCUS_DURATION : BREAK_DURATION;
+
+    // 🔵 Log session to Firebase
+    await logPomodoroSession(duration, completedType);
+
+    // 🔁 Switch mode
     if (isFocusMode) {
       setSessionCount((prev) => prev + 1);
     }
