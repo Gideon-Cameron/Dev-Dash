@@ -1,8 +1,7 @@
-// src/pages/Dashboard.tsx
 import GitHubStats from '../features/GitHubStats/GitHubStats';
 import GitHubRepoList from '../features/GitHubRepoList/GitHubRepoList';
-// import QuoteBox from '../features/QuoteBox/QuoteBox';
 import DevQuoteBox from '../features/DevQuoteBox/DevQuoteBox';
+import PomodoroTimer from '../features/PomodoroTimer/PomodoroTimer';
 
 const Dashboard = () => {
   return (
@@ -14,9 +13,9 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <GitHubStats />
-        {/* <QuoteBox /> */}
         <GitHubRepoList />
         <DevQuoteBox />
+        <PomodoroTimer />
       </div>
     </div>
   );
