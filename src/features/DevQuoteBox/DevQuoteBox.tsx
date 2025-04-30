@@ -26,7 +26,9 @@ const DevQuoteBox = () => {
 
   return (
     <div className="rounded-lg bg-white p-6 shadow-md">
+      <p className='mb-4 text-xl font-semibold text-gray-800 text-center'>Daily Quote</p>
       <blockquote className="text-gray-700 italic">"{quote.content}"</blockquote>
+      
       <p className="mt-4 text-right text-sm text-gray-500">— {quote.author}</p>
     </div>
   );
