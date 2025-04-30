@@ -1,4 +1,3 @@
-// src/features/QuoteBox/QuoteBox.tsx
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -13,13 +12,19 @@ const QuoteBox = () => {
 
   const fetchQuote = async () => {
     try {
-      const response = await axios.get<Quote>('https://api.quotable.io/random?tags=technology|inspirational');
-      setQuote(response.data);
+      const response = await axios.get<{ content: string; author: string }>(
+        'https://corsproxy.io/?https://api.quotable.io/random?tags=technology,inspirational'
+      );
+      const data = response.data;
+  
+      setQuote({ content: data.content, author: data.author });
     } catch (err) {
       setError('Could not load quote.');
       console.error('Quote API error:', err);
     }
   };
+  
+  
 
   useEffect(() => {
     fetchQuote();
