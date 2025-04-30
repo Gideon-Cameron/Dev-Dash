@@ -2,6 +2,7 @@
 import GitHubStats from '../features/GitHubStats/GitHubStats';
 import GitHubRepoList from '../features/GitHubRepoList/GitHubRepoList';
 // import QuoteBox from '../features/QuoteBox/QuoteBox';
+import DevQuoteBox from '../features/DevQuoteBox/DevQuoteBox';
 
 const Dashboard = () => {
   return (
@@ -15,6 +16,7 @@ const Dashboard = () => {
         <GitHubStats />
         {/* <QuoteBox /> */}
         <GitHubRepoList />
+        <DevQuoteBox />
       </div>
     </div>
   );
