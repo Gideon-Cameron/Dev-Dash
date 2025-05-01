@@ -35,17 +35,14 @@ const GitHubRepoList = () => {
     const githubProfile = user?.providerData.find(
       (provider) => provider.providerId === 'github.com'
     );
-  
-    // Try to use displayName, fallback to cleaned value
+
     let username = githubProfile?.displayName?.trim();
-  
     if (username && username.includes(' ')) {
-      // Replace spaces with dashes (temporary workaround)
       username = username.replace(/\s+/g, '-');
     }
-  
+
     console.log('Fetching GitHub repos for username:', username);
-  
+
     if (username) {
       fetchRepos(username);
     } else {
@@ -53,40 +50,43 @@ const GitHubRepoList = () => {
       setLoading(false);
     }
   }, [user]);
-  
 
   if (loading) {
     return (
-      <div className="rounded-lg bg-white p-6 shadow-md">
-        <p className="text-gray-500">Loading GitHub repositories...</p>
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
+        <p className="text-gray-500 dark:text-gray-400">Loading GitHub repositories...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-lg bg-white p-6 shadow-md">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
         <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-md">
-      <h2 className="mb-4 text-xl font-semibold text-gray-800">Recent GitHub Repositories</h2>
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
+      <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100">
+        Recent GitHub Repositories
+      </h2>
       <ul className="space-y-4">
         {repos.map((repo) => (
-          <li key={repo.id} className="border-b pb-2">
+          <li key={repo.id} className="border-b border-gray-200 dark:border-gray-700 pb-2">
             <a
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-lg font-bold text-blue-600 hover:underline"
+              className="text-lg font-bold text-blue-600 dark:text-blue-400 hover:underline"
             >
               {repo.name}
             </a>
-            {repo.description && <p className="text-gray-600">{repo.description}</p>}
-            <div className="mt-1 text-sm text-gray-500">
+            {repo.description && (
+              <p className="text-gray-600 dark:text-gray-300">{repo.description}</p>
+            )}
+            <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               {repo.language && <span>{repo.language}</span>}
               {repo.stargazers_count > 0 && (
                 <span className="ml-4">⭐ {repo.stargazers_count}</span>
