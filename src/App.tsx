@@ -22,6 +22,12 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* ✅ Redirect root to appropriate start page */}
+        <Route
+          path="/"
+          element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />}
+        />
+
         {/* Public Route */}
         <Route
           path="/login"
