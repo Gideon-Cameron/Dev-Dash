@@ -4,7 +4,7 @@ module.exports = {
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
   ],
-  darkMode: 'class', // ✅ Required for manual class switching
+  darkMode: 'class', // ✅ enables manual switching
   theme: {
     extend: {},
   },
