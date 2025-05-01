@@ -5,9 +5,9 @@ import PomodoroTimer from '../features/PomodoroTimer/PomodoroTimer';
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-bold text-gray-800">Developer Dashboard</h1>
-      <p className="text-gray-600">
+    <div className="flex flex-col gap-6 text-gray-800 dark:text-gray-100">
+      <h1 className="text-3xl font-bold">Developer Dashboard</h1>
+      <p className="text-gray-600 dark:text-gray-300">
         Welcome back! Your personalized developer tools and stats are below.
       </p>
 
