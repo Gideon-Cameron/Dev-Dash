@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { logPomodoroSession } from './pomodoroService';
+import {
+  requestNotificationPermission,
+  showNotification,
+  flashTitle,
+} from '../../utils/notificationUtils';
 
 const FOCUS_DURATION = 25 * 60;
 const BREAK_DURATION = 5 * 60;
@@ -10,18 +15,17 @@ const usePomodoro = () => {
   const [timeLeft, setTimeLeft] = useState(FOCUS_DURATION);
   const [sessionCount, setSessionCount] = useState(0);
   const intervalRef = useRef<number | null>(null);
-  const hasCompletedRef = useRef(false); // ✅ avoid double-triggering
+  const hasCompletedRef = useRef(false);
 
   useEffect(() => {
     if (isRunning) {
-      // ✅ Clear any previous interval before creating a new one
       if (intervalRef.current) clearInterval(intervalRef.current);
 
       intervalRef.current = window.setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             if (!hasCompletedRef.current) {
-              hasCompletedRef.current = true; // ✅ prevent multiple calls
+              hasCompletedRef.current = true;
               clearInterval(intervalRef.current!);
               handleSessionComplete();
             }
@@ -43,6 +47,11 @@ const usePomodoro = () => {
 
     await logPomodoroSession(duration, completedType);
 
+    // 🔔 Notify user
+    const nextType = isFocusMode ? 'break' : 'focus';
+    showNotification('Session Complete', `Time for a ${nextType} session!`);
+    flashTitle('⏰ Session Complete!');
+
     if (isFocusMode) {
       setSessionCount((prev) => prev + 1);
     }
@@ -50,11 +59,12 @@ const usePomodoro = () => {
     setIsFocusMode((prev) => !prev);
     setTimeLeft(isFocusMode ? BREAK_DURATION : FOCUS_DURATION);
     setIsRunning(false);
-    hasCompletedRef.current = false; // ✅ reset guard for next session
+    hasCompletedRef.current = false;
   };
 
   const startTimer = () => {
-    hasCompletedRef.current = false; // ✅ ensure it's ready for a clean start
+    requestNotificationPermission();
+    hasCompletedRef.current = false;
     setIsRunning(true);
   };
 
