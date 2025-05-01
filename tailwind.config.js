@@ -1,14 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+module.exports = {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+  ],
+  darkMode: 'class', // ✅ Required for manual class switching
   theme: {
-    extend: {
-      colors: {
-        gold: '#B88E2F',
-        background: '#F6D8C6',
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };
-

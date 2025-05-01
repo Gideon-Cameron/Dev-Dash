@@ -4,6 +4,7 @@ import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PomodoroHistory from './pages/PomodoroHistory';
+import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AppLayout from './layout/AppLayout';
 
@@ -47,6 +48,19 @@ const App = () => {
             isAuthenticated ? (
               <AppLayout>
                 <PomodoroHistory />
+              </AppLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            isAuthenticated ? (
+              <AppLayout>
+                <Settings />
               </AppLayout>
             ) : (
               <Navigate to="/login" />
