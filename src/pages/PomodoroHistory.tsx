@@ -74,7 +74,7 @@ const PomodoroHistory = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 rounded-lg bg-white dark:bg-gray-800 shadow-md transition-colors duration-300">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">Pomodoro History</h1>
+      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">Session History</h1>
 
       <div className="mb-6 flex gap-4">
         {(['daily', 'weekly', 'all'] as ViewMode[]).map((v) => (

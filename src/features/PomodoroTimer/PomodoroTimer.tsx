@@ -15,16 +15,16 @@ const PomodoroTimer = () => {
   const padded = (value: number) => value.toString().padStart(2, '0');
 
   return (
-    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md flex flex-col items-start gap-4 transition-colors duration-300">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-4 shadow-md flex flex-col items-start gap-3 transition-colors duration-300">
+      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
         {isFocusMode ? 'Focus Session' : 'Break Time'}
       </h2>
 
-      <div className="text-6xl font-mono text-gray-900 dark:text-gray-100 tracking-widest">
+      <div className="text-5xl font-mono text-gray-900 dark:text-gray-100 tracking-widest">
         {padded(minutes)}:{padded(seconds)}
       </div>
 
-      <div className="flex gap-4 mt-2">
+      <div className="flex gap-3">
         {!isRunning ? (
           <button
             onClick={startTimer}
@@ -48,7 +48,7 @@ const PomodoroTimer = () => {
         </button>
       </div>
 
-      <p className="text-gray-600 dark:text-gray-400 mt-2">
+      <p className="text-gray-600 dark:text-gray-400 text-sm">
         Sessions completed: <strong>{sessionCount}</strong>
       </p>
     </div>

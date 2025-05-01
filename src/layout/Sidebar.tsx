@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Pomodoro History', path: '/pomodoro-history' },
+    { name: 'Session History', path: '/pomodoro-history' },
     { name: 'Settings', path: '/settings' },
   ];
 
