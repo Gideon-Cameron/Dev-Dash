@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { logPomodoroSession } from './pomodoroService';
 
-const FOCUS_DURATION = 25 * 60; // 25 minutes in seconds
-const BREAK_DURATION = 5 * 60;  // 5 minutes in seconds
+const FOCUS_DURATION = 25 * 60;
+const BREAK_DURATION = 5 * 60;
 
 const usePomodoro = () => {
   const [isFocusMode, setIsFocusMode] = useState(true);
@@ -10,14 +10,21 @@ const usePomodoro = () => {
   const [timeLeft, setTimeLeft] = useState(FOCUS_DURATION);
   const [sessionCount, setSessionCount] = useState(0);
   const intervalRef = useRef<number | null>(null);
+  const hasCompletedRef = useRef(false); // ✅ avoid double-triggering
 
   useEffect(() => {
     if (isRunning) {
+      // ✅ Clear any previous interval before creating a new one
+      if (intervalRef.current) clearInterval(intervalRef.current);
+
       intervalRef.current = window.setInterval(() => {
         setTimeLeft((prev) => {
-          if (prev === 1) {
-            clearInterval(intervalRef.current!);
-            handleSessionComplete();
+          if (prev <= 1) {
+            if (!hasCompletedRef.current) {
+              hasCompletedRef.current = true; // ✅ prevent multiple calls
+              clearInterval(intervalRef.current!);
+              handleSessionComplete();
+            }
             return 0;
           }
           return prev - 1;
@@ -34,20 +41,20 @@ const usePomodoro = () => {
     const completedType = isFocusMode ? 'focus' : 'break';
     const duration = isFocusMode ? FOCUS_DURATION : BREAK_DURATION;
 
-    // 🔵 Log session to Firebase
     await logPomodoroSession(duration, completedType);
 
-    // 🔁 Switch mode
     if (isFocusMode) {
       setSessionCount((prev) => prev + 1);
     }
 
-    setIsFocusMode(!isFocusMode);
-    setTimeLeft(!isFocusMode ? FOCUS_DURATION : BREAK_DURATION);
+    setIsFocusMode((prev) => !prev);
+    setTimeLeft(isFocusMode ? BREAK_DURATION : FOCUS_DURATION);
     setIsRunning(false);
+    hasCompletedRef.current = false; // ✅ reset guard for next session
   };
 
   const startTimer = () => {
+    hasCompletedRef.current = false; // ✅ ensure it's ready for a clean start
     setIsRunning(true);
   };
 
@@ -58,6 +65,7 @@ const usePomodoro = () => {
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(isFocusMode ? FOCUS_DURATION : BREAK_DURATION);
+    hasCompletedRef.current = false;
   };
 
   const minutes = Math.floor(timeLeft / 60);

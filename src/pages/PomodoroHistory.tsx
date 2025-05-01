@@ -60,7 +60,7 @@ const PomodoroHistory = () => {
     fetchSessions();
   }, [view]);
 
-  const totalMinutes = sessions.reduce((sum, s) => sum + s.duration / 60, 0);
+  const totalMinutes = sessions.reduce((sum, s) => sum + Number(s.duration) / 60, 0);
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 rounded-lg bg-white shadow-md">

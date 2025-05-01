@@ -25,7 +25,8 @@ import {
     if (!user) return;
   
     const ref = collection(db, 'users', user.uid, 'pomodoroSessions');
-  
+    console.log('Logging session:', { type, duration });
+
     await addDoc(ref, {
       timestamp: new Date(),
       duration,
