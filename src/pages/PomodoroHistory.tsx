@@ -7,6 +7,15 @@ import {
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getAuth } from 'firebase/auth';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
 
 type ViewMode = 'daily' | 'weekly' | 'all';
 
@@ -41,7 +50,7 @@ const PomodoroHistory = () => {
       } else if (view === 'weekly') {
         q = query(ref, where('timestamp', '>=', getPastDays(7)));
       } else {
-        q = query(ref); // all time
+        q = query(ref);
       }
 
       const snapshot = await getDocs(q);
@@ -61,6 +70,8 @@ const PomodoroHistory = () => {
   }, [view]);
 
   const totalMinutes = sessions.reduce((sum, s) => sum + Number(s.duration) / 60, 0);
+
+  const weeklyChartData = generateWeeklyChartData(sessions);
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 rounded-lg bg-white shadow-md">
@@ -93,12 +104,27 @@ const PomodoroHistory = () => {
               <strong>{sessions.length}</strong> focus sessions
             </p>
             <p className="text-lg text-gray-700">
-              <strong>{Math.round(totalMinutes)}</strong> total minutes focused.
+              <strong>{Math.round(totalMinutes)}</strong> total minutes focused
             </p>
           </div>
 
+          {view === 'weekly' && (
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">Weekly Focus Chart</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={weeklyChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="minutes" fill="#3b82f6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
           <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Timestamps</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Session Timestamps</h2>
             <ul className="space-y-1 text-sm text-gray-600">
               {sessions.map((session, index) => (
                 <li key={index}>
@@ -116,5 +142,27 @@ const PomodoroHistory = () => {
     </div>
   );
 };
+
+function generateWeeklyChartData(sessions: FocusSession[]) {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  const data: Record<string, number> = {};
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - (6 - i));
+    const key = days[date.getDay()];
+    data[key] = 0;
+  }
+
+  sessions.forEach((session) => {
+    const key = days[session.timestamp.getDay()];
+    data[key] += session.duration / 60;
+  });
+
+  return Object.entries(data).map(([day, minutes]) => ({
+    day,
+    minutes: Math.round(minutes),
+  }));
+}
 
 export default PomodoroHistory;
