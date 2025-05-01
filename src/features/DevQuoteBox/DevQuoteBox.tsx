@@ -25,11 +25,14 @@ const DevQuoteBox = () => {
   }, [today]);
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-md">
-      <p className='mb-4 text-xl font-semibold text-gray-800 text-center'>Daily Quote</p>
-      <blockquote className="text-gray-700 italic">"{quote.content}"</blockquote>
-      
-      <p className="mt-4 text-right text-sm text-gray-500">— {quote.author}</p>
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
+      <p className="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100 text-center">
+        Daily Quote
+      </p>
+      <blockquote className="text-gray-700 dark:text-gray-300 italic text-center">
+        “{quote.content}”
+      </blockquote>
+      <p className="mt-4 text-right text-sm text-gray-500 dark:text-gray-400">— {quote.author}</p>
     </div>
   );
 };
