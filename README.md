@@ -1,5 +1,9 @@
 # DevDash 🚀
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/169701a9-a74c-4f03-9276-3d767c911de9/deploy-status)](https://app.netlify.com/sites/dev-dash-gc/deploys)
+![License](https://img.shields.io/github/license/Gideon-Cameron/Dev-Dash)
+![Stars](https://img.shields.io/github/stars/Gideon-Cameron/Dev-Dash?style=social)
+
 DevDash is a personalized productivity dashboard for developers. Track your GitHub stats, stay motivated with daily quotes, manage your Pomodoro sessions, and more — all in one beautifully themed interface.
 
 ## 🌐 Live Demo
