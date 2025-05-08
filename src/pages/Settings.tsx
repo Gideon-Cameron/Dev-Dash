@@ -5,9 +5,24 @@ const Settings = () => {
     const saved = localStorage.getItem('devdash-theme');
     return saved === 'light' ? 'light' : 'dark'; // default to dark
   };
-  
-  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
 
+  const getInitialDurations = () => {
+    const stored = localStorage.getItem('pomodoro-preferences');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return {
+        focusDuration: parsed.focusDurationMin || 25,
+        breakDuration: parsed.breakDurationMin || 5,
+      };
+    }
+    return { focusDuration: 25, breakDuration: 5 };
+  };
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+  const [focusDuration, setFocusDuration] = useState<number>(getInitialDurations().focusDuration);
+  const [breakDuration, setBreakDuration] = useState<number>(getInitialDurations().breakDuration);
+
+  // Load and apply saved theme
   useEffect(() => {
     const savedTheme = localStorage.getItem('devdash-theme') as 'light' | 'dark' | null;
     if (savedTheme) {
@@ -27,11 +42,20 @@ const Settings = () => {
     localStorage.setItem('devdash-theme', newTheme);
   };
 
+  const handleDurationChange = () => {
+    const prefs = {
+      focusDurationMin: Math.max(1, focusDuration),
+      breakDurationMin: Math.max(1, breakDuration),
+    };
+    localStorage.setItem('pomodoro-preferences', JSON.stringify(prefs));
+    alert('Pomodoro durations saved. They’ll apply to your next timer.');
+  };
+
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors duration-300">
       <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">Settings</h1>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Theme Switcher */}
         <div>
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">Theme</h2>
@@ -58,6 +82,43 @@ const Settings = () => {
               />
               Dark
             </label>
+          </div>
+        </div>
+
+        {/* Pomodoro Durations */}
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            Pomodoro Durations
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <label className="w-40 text-gray-700 dark:text-gray-300">Focus duration (min):</label>
+              <input
+                type="number"
+                min={1}
+                max={120}
+                value={focusDuration}
+                onChange={(e) => setFocusDuration(Number(e.target.value))}
+                className="w-20 p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <label className="w-40 text-gray-700 dark:text-gray-300">Break duration (min):</label>
+              <input
+                type="number"
+                min={1}
+                max={60}
+                value={breakDuration}
+                onChange={(e) => setBreakDuration(Number(e.target.value))}
+                className="w-20 p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+            </div>
+            <button
+              onClick={handleDurationChange}
+              className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition"
+            >
+              Save Durations
+            </button>
           </div>
         </div>
 

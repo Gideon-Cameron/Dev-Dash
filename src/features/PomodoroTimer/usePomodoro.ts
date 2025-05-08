@@ -41,18 +41,22 @@ const getPreferences = (): PomodoroPreferences => {
   }
 };
 
+// ✅ Initialize immediately
+const initialPrefs = getPreferences();
+const initialDurationMs = initialPrefs.focusDurationMin * 60 * 1000;
+
 const usePomodoro = () => {
   const [isFocusMode, setIsFocusMode] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
-  const [timeLeftMs, setTimeLeftMs] = useState(0);
+  const [preferences, setPreferences] = useState<PomodoroPreferences>(initialPrefs);
+  const [timeLeftMs, setTimeLeftMs] = useState(initialDurationMs);
   const [sessionCount, setSessionCount] = useState(0);
-  const [preferences, setPreferences] = useState<PomodoroPreferences>(getPreferences());
 
   const endTimeRef = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const hasCompletedRef = useRef(false);
 
-  // === Load state on mount
+  // Load prior session
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_STATE_KEY);
     const prefs = getPreferences();
@@ -79,16 +83,42 @@ const usePomodoro = () => {
         }
       } else {
         setTimeLeftMs(state.timeLeftMs);
-        endTimeRef.current = null;
-        setIsRunning(false);
       }
     } else {
-      // No prior session — start fresh
+      // Fallback
       setTimeLeftMs(isFocusMode ? focusMs : breakMs);
     }
   }, []);
 
-  // === Save session state
+  // Apply updated preferences
+  useEffect(() => {
+    const handlePreferenceUpdate = () => {
+      const newPrefs = getPreferences();
+      setPreferences(newPrefs);
+
+      const newDurationMs = (isFocusMode
+        ? newPrefs.focusDurationMin
+        : newPrefs.breakDurationMin) * 60 * 1000;
+
+      // Reset to new duration
+      setTimeLeftMs(newDurationMs);
+      endTimeRef.current = null;
+      hasCompletedRef.current = false;
+
+      if (isRunning) {
+        setIsRunning(false);
+        requestNotificationPermission();
+        endTimeRef.current = Date.now() + newDurationMs;
+        setIsRunning(true);
+      }
+    };
+
+    window.addEventListener('pomodoro-preferences-updated', handlePreferenceUpdate);
+    return () =>
+      window.removeEventListener('pomodoro-preferences-updated', handlePreferenceUpdate);
+  }, [isRunning, isFocusMode]);
+
+  // Persist state
   useEffect(() => {
     const state: StoredPomodoroState = {
       isFocusMode,

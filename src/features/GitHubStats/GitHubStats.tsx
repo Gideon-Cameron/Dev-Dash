@@ -116,9 +116,9 @@ const GitHubStats = () => {
           >
             {login}
           </a>
-          <p className="text-gray-600 dark:text-gray-400">
+          {/* <p className="text-gray-600 dark:text-gray-400">
             {user.email || 'No public email'}
-          </p>
+          </p> */}
         </div>
       </div>
 

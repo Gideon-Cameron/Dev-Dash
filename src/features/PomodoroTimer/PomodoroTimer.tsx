@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import usePomodoro from './usePomodoro';
+import { usePomodoroContext } from '../../context/PomodoroContext';
 import { FiMoreVertical } from 'react-icons/fi';
 
 const PomodoroTimer = () => {
@@ -12,13 +12,13 @@ const PomodoroTimer = () => {
     startTimer,
     pauseTimer,
     resetTimer,
-  } = usePomodoro();
+  } = usePomodoroContext();
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const padded = (value: number) => value.toString().padStart(2, '0');
 
-  // ✅ Close on outside click
+  // ✅ Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -35,7 +35,9 @@ const PomodoroTimer = () => {
       className="relative bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-md px-4 py-2 shadow-sm transition-colors duration-300 font-mono text-sm flex flex-col items-end gap-1 min-w-[120px]"
     >
       <div className="flex items-center justify-between w-full gap-2">
-        <span className="font-semibold tracking-wide">{isFocusMode ? 'Focus' : 'Break'}</span>
+        <span className="font-semibold tracking-wide">
+          {isFocusMode ? 'Focus' : 'Break'}
+        </span>
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition"
