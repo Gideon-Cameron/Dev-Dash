@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const Settings = () => {
   const getInitialTheme = (): 'light' | 'dark' => {
     const saved = localStorage.getItem('devdash-theme');
-    return saved === 'light' ? 'light' : 'dark'; // default to dark
+    return saved === 'light' ? 'light' : 'dark';
   };
 
   const getInitialDurations = () => {
@@ -22,7 +22,6 @@ const Settings = () => {
   const [focusDuration, setFocusDuration] = useState<number>(getInitialDurations().focusDuration);
   const [breakDuration, setBreakDuration] = useState<number>(getInitialDurations().breakDuration);
 
-  // Load and apply saved theme
   useEffect(() => {
     const savedTheme = localStorage.getItem('devdash-theme') as 'light' | 'dark' | null;
     if (savedTheme) {
@@ -48,7 +47,11 @@ const Settings = () => {
       breakDurationMin: Math.max(1, breakDuration),
     };
     localStorage.setItem('pomodoro-preferences', JSON.stringify(prefs));
-    alert('Pomodoro durations saved. They’ll apply to your next timer.');
+
+    // ✅ Dispatch update event to inform usePomodoro
+    window.dispatchEvent(new Event('pomodoro-preferences-updated'));
+
+    // alert('Pomodoro durations updated. Timer reset to new values.');
   };
 
   return (
