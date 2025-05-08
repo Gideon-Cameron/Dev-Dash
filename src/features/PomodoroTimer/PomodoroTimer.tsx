@@ -1,4 +1,6 @@
+import { useState, useRef, useEffect } from 'react';
 import usePomodoro from './usePomodoro';
+import { FiMoreVertical } from 'react-icons/fi';
 
 const PomodoroTimer = () => {
   const {
@@ -12,45 +14,77 @@ const PomodoroTimer = () => {
     resetTimer,
   } = usePomodoro();
 
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const padded = (value: number) => value.toString().padStart(2, '0');
 
+  // ✅ Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className="rounded-lg bg-white dark:bg-gray-800 p-4 shadow-md flex flex-col items-start gap-3 transition-colors duration-300">
-      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
-        {isFocusMode ? 'Focus Session' : 'Break Time'}
-      </h2>
-
-      <div className="text-5xl font-mono text-gray-900 dark:text-gray-100 tracking-widest">
-        {padded(minutes)}:{padded(seconds)}
-      </div>
-
-      <div className="flex gap-3">
-        {!isRunning ? (
-          <button
-            onClick={startTimer}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition"
-          >
-            Start
-          </button>
-        ) : (
-          <button
-            onClick={pauseTimer}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition"
-          >
-            Pause
-          </button>
-        )}
+    <div
+      ref={dropdownRef}
+      className="relative bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-md px-4 py-2 shadow-sm transition-colors duration-300 font-mono text-sm flex flex-col items-end gap-1 min-w-[120px]"
+    >
+      <div className="flex items-center justify-between w-full gap-2">
+        <span className="font-semibold tracking-wide">{isFocusMode ? 'Focus' : 'Break'}</span>
         <button
-          onClick={resetTimer}
-          className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-black dark:text-white px-4 py-2 rounded transition"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition"
+          aria-label="Open Pomodoro menu"
         >
-          Reset
+          <FiMoreVertical size={16} />
         </button>
       </div>
 
-      <p className="text-gray-600 dark:text-gray-400 text-sm">
-        Sessions completed: <strong>{sessionCount}</strong>
-      </p>
+      <span className="text-xl font-bold tracking-widest">
+        {padded(minutes)}:{padded(seconds)}
+      </span>
+      <span className="text-xs text-gray-500 dark:text-gray-400">× {sessionCount}</span>
+
+      {/* Dropdown */}
+      {isOpen && (
+        <div className="absolute top-full right-0 mt-2 w-32 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md z-10 transition-colors duration-200">
+          {!isRunning ? (
+            <button
+              onClick={() => {
+                startTimer();
+                setIsOpen(false);
+              }}
+              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            >
+              Start
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                pauseTimer();
+                setIsOpen(false);
+              }}
+              className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            >
+              Pause
+            </button>
+          )}
+          <button
+            onClick={() => {
+              resetTimer();
+              setIsOpen(false);
+            }}
+            className="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          >
+            Reset
+          </button>
+        </div>
+      )}
     </div>
   );
 };
