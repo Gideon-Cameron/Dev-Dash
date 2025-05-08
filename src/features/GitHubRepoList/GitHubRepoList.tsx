@@ -41,8 +41,6 @@ const GitHubRepoList = () => {
       username = username.replace(/\s+/g, '-');
     }
 
-    console.log('Fetching GitHub repos for username:', username);
-
     if (username) {
       fetchRepos(username);
     } else {
@@ -51,14 +49,24 @@ const GitHubRepoList = () => {
     }
   }, [user]);
 
+  // ✅ Skeleton loader
   if (loading) {
     return (
-      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
-        <p className="text-gray-500 dark:text-gray-400">Loading GitHub repositories...</p>
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300 animate-pulse space-y-4">
+        <div className="h-6 w-2/3 bg-gray-300 dark:bg-gray-700 rounded"></div>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="space-y-2">
+            <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-600 rounded"></div>
+            <div className="h-3 w-3/4 bg-gray-200 dark:bg-gray-600 rounded"></div>
+            <div className="h-3 w-1/3 bg-gray-100 dark:bg-gray-700 rounded"></div>
+            <div className="border-b border-gray-200 dark:border-gray-700 pt-2" />
+          </div>
+        ))}
       </div>
     );
   }
 
+  // ❌ Real error
   if (error) {
     return (
       <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
@@ -67,6 +75,7 @@ const GitHubRepoList = () => {
     );
   }
 
+  // ✅ Loaded state
   return (
     <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
       <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100">
