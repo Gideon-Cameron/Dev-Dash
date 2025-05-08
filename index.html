@@ -1,11 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Character encoding -->
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Responsive viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Title -->
+    <title>DevDash | Developer Productivity Dashboard</title>
+
+    <!-- SEO Meta -->
+    <meta name="description" content="DevDash is a customizable developer productivity dashboard with themes, timers, and login. Built with React, Tailwind, and Firebase." />
+    <meta name="keywords" content="DevDash, Developer Dashboard, React, Tailwind, Firebase, Productivity App" />
+    <meta name="author" content="Gideon Cameron" />
+
+    <!-- Open Graph (Social Sharing) -->
+    <meta property="og:title" content="DevDash | Developer Productivity Dashboard" />
+    <meta property="og:description" content="Track your developer productivity with DevDash — a clean, themeable dashboard for coders." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dev-dash-gc.netlify.app/" />
+    <meta property="og:image" content="/og-preview.png" /> <!-- Optional image -->
+
+    <!-- Dark mode script -->
+    <script>
+      try {
+        const saved = localStorage.getItem('devdash-theme');
+        if (!saved || saved === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

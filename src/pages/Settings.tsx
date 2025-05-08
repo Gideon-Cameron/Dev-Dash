@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 
 const Settings = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const getInitialTheme = (): 'light' | 'dark' => {
+    const saved = localStorage.getItem('devdash-theme');
+    return saved === 'light' ? 'light' : 'dark'; // default to dark
+  };
+  
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('devdash-theme') as 'light' | 'dark' | null;

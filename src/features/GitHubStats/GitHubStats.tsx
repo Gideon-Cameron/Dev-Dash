@@ -65,7 +65,7 @@ const GitHubStats = () => {
 
   if (!user || error || !profile) {
     return (
-      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md">
+      <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
         <p className="text-red-500">{error || 'GitHub stats not available.'}</p>
       </div>
     );
@@ -74,12 +74,12 @@ const GitHubStats = () => {
   const rank = getRank(stars);
 
   return (
-    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300">
+    <div className="rounded-lg bg-white dark:bg-gray-800 p-6 shadow-md transition-colors duration-300 border border-gray-200 dark:border-gray-700">
       <div className="flex items-center gap-4">
         <img
           src={profile.avatar_url}
           alt="Avatar"
-          className="h-16 w-16 rounded-full border-2 border-gray-300"
+          className="h-16 w-16 rounded-full border-2 border-gray-300 dark:border-gray-600"
         />
         <div>
           <a
@@ -96,31 +96,35 @@ const GitHubStats = () => {
         </div>
       </div>
 
-      {/* Main GitHub stats: repos, followers, following */}
       <div className="mt-4 grid grid-cols-3 gap-4 text-center">
         <div>
-          <p className="text-lg font-bold">{profile.public_repos}</p>
+          <p className="text-lg font-bold text-gray-800 dark:text-gray-100">
+            {profile.public_repos}
+          </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">Repos</p>
         </div>
         <div>
-          <p className="text-lg font-bold">{profile.followers}</p>
+          <p className="text-lg font-bold text-gray-800 dark:text-gray-100">
+            {profile.followers}
+          </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">Followers</p>
         </div>
         <div>
-          <p className="text-lg font-bold">{profile.following}</p>
+          <p className="text-lg font-bold text-gray-800 dark:text-gray-100">
+            {profile.following}
+          </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">Following</p>
         </div>
       </div>
 
-      {/* Additional stats: stars and rank */}
       <div className="mt-6 space-y-3 text-left">
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400">Total Stars</p>
-          <p className="text-lg font-bold">{stars}</p>
+          <p className="text-lg font-bold text-gray-800 dark:text-gray-100">{stars}</p>
         </div>
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400">Dev Rank</p>
-          <p className="text-lg font-bold">{rank}</p>
+          <p className="text-lg font-bold text-gray-800 dark:text-gray-100">{rank}</p>
         </div>
       </div>
     </div>

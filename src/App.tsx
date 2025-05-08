@@ -7,16 +7,13 @@ import PomodoroHistory from './pages/PomodoroHistory';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AppLayout from './layout/AppLayout';
+import LoadingScreen from './components/LoadingScreen';
 
 const App = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg font-semibold">Loading...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
