@@ -1,13 +1,17 @@
 // src/App.tsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Suspense, lazy} from "react"
 import { useAuth } from './hooks/useAuth';
+
+
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PomodoroHistory from './pages/PomodoroHistory';
-import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import AppLayout from './layout/AppLayout';
 import LoadingScreen from './components/LoadingScreen';
+
+const Settings = lazy(() => import('./pages/Settings'))
 
 const App = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -58,12 +62,16 @@ const App = () => {
           }
         />
 
+        {/* 🚀 Lazy-loaded Settings route */}
         <Route
           path="/settings"
           element={
             isAuthenticated ? (
               <AppLayout>
-                <Settings />
+                <Suspense fallback={<div className="p-6 text-center">Loading Settings...</div>}>
+                  <Settings />
+                </Suspense>
+                
               </AppLayout>
             ) : (
               <Navigate to="/login" />
