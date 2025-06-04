@@ -6,12 +6,13 @@ import { useAuth } from './hooks/useAuth';
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import PomodoroHistory from './pages/PomodoroHistory';
+// import PomodoroHistory from './pages/PomodoroHistory';
 import NotFound from './pages/NotFound';
 import AppLayout from './layout/AppLayout';
 import LoadingScreen from './components/LoadingScreen';
 
 const Settings = lazy(() => import('./pages/Settings'))
+const PomodoroHistory = lazy(() => import('./pages/PomodoroHistory'))
 
 const App = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -54,7 +55,9 @@ const App = () => {
           element={
             isAuthenticated ? (
               <AppLayout>
-                <PomodoroHistory />
+                <Suspense fallback={<div className='p-6 text-center'>Loading History</div>}>
+                  <PomodoroHistory />
+                </Suspense>
               </AppLayout>
             ) : (
               <Navigate to="/login" />
